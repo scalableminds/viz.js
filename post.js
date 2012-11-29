@@ -1,4 +1,4 @@
-  Module["ccall"]("vizRenderFromString", "number", ["string", "string"], [src, format]);
+  Module["ccall"]("vizRenderFromString", "number", ["string", "string", "string"], [src, format, layoutEngine]);
   return Module["return"];
 }
 
@@ -15,9 +15,9 @@ if (this.document === undefined) {
 		var payload = event["data"]["payload"];
 		var result;
 		try {
-			result = { "payload" : Viz(payload["source"], payload["format"]) };
+			result = { "payload" : Viz(payload["source"], payload["format"], payload["layoutEngine"]) };
 		} catch (error) {
-			result = { "error" : error };
+			result = { "error" : error.toString() };
 		}
 		result["workerHandle"] = event["data"]["workerHandle"];
 		this.postMessage(result);
