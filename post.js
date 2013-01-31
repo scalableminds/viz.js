@@ -26,3 +26,4 @@ if (this.document === undefined) {
 	// regular browser mode
 	window["Viz"] = Viz;
 }
+

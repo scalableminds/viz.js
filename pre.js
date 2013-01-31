@@ -1,4 +1,4 @@
-Viz = function(src, format, layoutEngine) {
+((typeof exports !== "undefined" && exports !== null) ? exports : this)["Viz"] = function(src, format, layoutEngine) {
   var Module = {};
   if (format === undefined)
   	format = "svg";
