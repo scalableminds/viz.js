@@ -13,3 +13,8 @@ This project is based on existing work by:
 
 * Satoshi Ueyama - [liviz.js](https://github.com/gyuque/livizjs)
 * Brenton Partridge - [graphviz.js](https://github.com/bpartridge/graphviz.js)
+
+Additions from scalable minds
+
+* neato layout engine
+* support for dispatched_worker (https://gist.github.com/4136597)
