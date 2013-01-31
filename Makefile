@@ -3,7 +3,7 @@ EMCC=$(EMSCRIPTEN_ROOT)/emcc
 SRCDIR=graphviz-src
 top_srcdir=../..
 
-viz.js: $(SRCDIR) viz.c $(SRCDIR)/lib/cdt/libcdt-em.bc $(SRCDIR)/lib/common/libcommon-em.bc $(SRCDIR)/lib/gvc/libgvc-em.bc $(SRCDIR)/lib/pathplan/libpathplan-em.bc $(SRCDIR)/lib/sparse/libsparse-em.bc $(SRCDIR)/lib/pack/libpack-em.bc $(SRCDIR)/lib/graph/libgraph-em.bc $(SRCDIR)/lib/dotgen/libdotgen-em.bc $(SRCDIR)/lib/neatogen/libneatogen-em.bc $(SRCDIR)/plugin/core/libgvplugin_core-em.bc $(SRCDIR)/plugin/dot_layout/libgvplugin_dot_layout-em.bc $(SRCDIR)/plugin/neato_layout/libgvplugin_neato_layout-em.bc
+viz.js: $(SRCDIR) viz.c $(SRCDIR)/lib/cdt/libcdt-em.bc $(SRCDIR)/lib/common/libcommon-em.bc $(SRCDIR)/lib/gvc/libgvc-em.bc $(SRCDIR)/lib/pathplan/libpathplan-em.bc $(SRCDIR)/lib/sparse/libsparse-em.bc $(SRCDIR)/lib/pack/libpack-em.bc $(SRCDIR)/lib/graph/libgraph-em.bc $(SRCDIR)/lib/vpsc/libvpsc-em.bc $(SRCDIR)/lib/rbtree/librbtree-em.bc $(SRCDIR)/lib/dotgen/libdotgen-em.bc $(SRCDIR)/lib/neatogen/libneatogen-em.bc $(SRCDIR)/plugin/core/libgvplugin_core-em.bc $(SRCDIR)/lib/sfdpgen/libsfdpgen-em.bc $(SRCDIR)/plugin/dot_layout/libgvplugin_dot_layout-em.bc $(SRCDIR)/plugin/neato_layout/libgvplugin_neato_layout-em.bc
 	$(EMCC) -v -O2 -s EXPORTED_FUNCTIONS='["_vizRenderFromString"]' -o viz.js \
 		-I$(SRCDIR)/lib/gvc \
 		-I$(SRCDIR)/lib/common \
@@ -33,7 +33,8 @@ $(SRCDIR)/lib/common/libcommon-em.bc:
 		-I../pathplan \
 		-I../cdt \
 		-I../graph \
-		-I../xdot -DHAVE_CONFIG_H arrows.c emit.c utils.c labels.c memory.c fontmetrics.c geom.c globals.c htmllex.c htmlparse.c htmltable.c ns.c postproc.c routespl.c shapes.c splines.c colxlate.c psusershape.c pointset.c input.c xdot.c timing.c output.c
+		-I../xdot \
+		-DHAVE_CONFIG_H arrows.c emit.c utils.c labels.c memory.c fontmetrics.c geom.c globals.c htmllex.c htmlparse.c htmltable.c ns.c postproc.c routespl.c shapes.c splines.c colxlate.c psusershape.c pointset.c input.c timing.c output.c
 
 $(SRCDIR)/lib/gvc/libgvc-em.bc:
 	cd $(SRCDIR)/lib/gvc; $(EMCC) -o libgvc-em.bc \
@@ -44,7 +45,9 @@ $(SRCDIR)/lib/gvc/libgvc-em.bc:
 		-I../common \
 		-I../pathplan \
 		-I../cdt \
-		-I../graph -DHAVE_CONFIG_H gvc.c gvconfig.c gvcontext.c gvdevice.c gvlayout.c gvevent.c gvjobs.c gvplugin.c gvrender.c gvusershape.c gvloadimage.c gvtextlayout.c
+		-I../graph \
+		-include $(top_srcdir)/lib/common/memory.h\
+		-DHAVE_CONFIG_H gvc.c gvconfig.c gvcontext.c gvdevice.c gvlayout.c gvevent.c gvjobs.c gvplugin.c gvrender.c gvusershape.c gvloadimage.c gvtextlayout.c
 
 $(SRCDIR)/lib/pathplan/libpathplan-em.bc:
 	cd $(SRCDIR)/lib/pathplan; $(EMCC) -o libpathplan-em.bc \
@@ -70,6 +73,10 @@ $(SRCDIR)/lib/sparse/libsparse-em.bc:
 
 $(SRCDIR)/lib/pack/libpack-em.bc:
 	cd $(SRCDIR)/lib/pack; $(EMCC) -o $(top_srcdir)/lib/pack/libpack-em.bc \
+		-I.  \
+		-I.. \
+		-I../.. \
+		-I../../.. \
 		-I$(top_srcdir) \
 		-I$(top_srcdir)/lib/common \
 		-I$(top_srcdir)/lib/gvc \
@@ -77,7 +84,7 @@ $(SRCDIR)/lib/pack/libpack-em.bc:
 		-I$(top_srcdir)/lib/pathplan \
 		-I$(top_srcdir)/lib/graph \
 		-I$(top_srcdir)/lib/cdt \
-		ccomps.c pack.c
+		-DHAVE_CONFIG_H pack.c ccomps.c 
 
 $(SRCDIR)/lib/vpsc/libvpsc-em.bc:
 	cd $(SRCDIR)/lib/vpsc; $(EMCC) -o $(top_srcdir)/lib/vpsc/libvpsc-em.bc \

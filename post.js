@@ -17,7 +17,7 @@ if (this.document === undefined) {
 		try {
 			result = { "payload" : Viz(payload["source"], payload["format"], payload["layoutEngine"]) };
 		} catch (error) {
-			result = { "error" : error.toString() };
+			result = { "error" : error.stack };
 		}
 		result["workerHandle"] = event["data"]["workerHandle"];
 		this.postMessage(result);
